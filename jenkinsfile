@@ -28,9 +28,14 @@ pipeline {
             }
         }
      
-        stage('Run') {
+        stage('push image to hub') {
             steps {
-                sh 'node index.js'
+                script{
+                  withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                  sh 'docker login -u amitkasera2001 -p ${dockerhubpwd}'
+             }
+                 sh 'docker push amitkasera2001/ci-cd-pipeline2' 
+              }
             }
         }
     }
